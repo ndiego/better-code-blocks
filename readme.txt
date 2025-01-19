@@ -14,7 +14,7 @@ Enhanced code block functionality for WordPress with syntax highlighting, line n
 
 Better Code Blocks enhances the core WordPress Code block with additional features:
 
-* Syntax highlighting using highlight.js
+* Syntax highlighting using [highlight.js](https://highlightjs.org/)
 * Optional copy to clipboard button
 * Optional title/header for code blocks
 * Optional line numbers

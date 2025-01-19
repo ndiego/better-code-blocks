@@ -7,7 +7,7 @@ Enhances the WordPress Code block with syntax highlighting, line numbers, and co
 
 ## Features
 
-- Syntax highlighting powered by highlight.js
+- Syntax highlighting powered by [highlight.js](https://highlightjs.org/)
 - Optional copy to clipboard button
 - Optional title/header for code blocks
 - Optional line numbers
@@ -44,4 +44,4 @@ Enhances the WordPress Code block with syntax highlighting, line numbers, and co
 ## Credits
 
 - Built almost entirely with [Cursor](https://www.cursor.com/).
-- Syntax highlighting by [highlight.js](https://highlightjs.org/) 
+- Syntax highlighting by [highlight.js](https://highlightjs.org/).
