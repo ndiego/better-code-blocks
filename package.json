@@ -1,0 +1,21 @@
+{
+	"name": "better-code-blocks",
+	"version": "0.1.0",
+	"description": "Enhanced code block functionality for WordPress",
+	"author": "Nick Diego",
+	"license": "GPL-2.0-or-later",
+	"scripts": {
+		"build": "wp-scripts build",
+		"format": "wp-scripts format",
+		"lint:css": "wp-scripts lint-style",
+		"lint:js": "wp-scripts lint-js",
+		"start": "wp-scripts start",
+		"packages-update": "wp-scripts packages-update"
+	},
+	"devDependencies": {
+		"@wordpress/scripts": "^26.0.0"
+	},
+	"dependencies": {
+		"highlight.js": "^11.9.0"
+	}
+} 
