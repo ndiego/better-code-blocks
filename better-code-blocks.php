@@ -219,32 +219,45 @@ add_filter( 'render_block', 'bcb_render_block', 10, 2 );
  * @return array             The modified block arguments.
  */
 function bcb_modify_core_code_block( $args, $block_type ) {
-	if ( 'core/code' === $block_type ) {
-		$args['supports'] ??= [];
+    if ( 'core/code' === $block_type ) {
+        $args['supports'] ??= [];
+        
+        // Initialize support arrays if they don't exist
+        $args['supports']['color'] ??= [];
+        $args['supports']['typography'] ??= [];
+        $args['supports']['spacing'] ??= [];
+        $args['supports']['typography']['__experimentalDefaultControls'] ??= [];
 
-		// Remove color support.
-		$args['supports']['color'] = false;
-		$args['supports']['color']['text'] = false;
-		$args['supports']['color']['background'] = false;
+        // Remove color support
+        $args['supports']['color'] = [
+            'text' => false,
+            'background' => false,
+        ];
 
-		// Remove border support.
-		$args['supports']['__experimentalBorder'] = false;
+        // Remove border support
+        $args['supports']['__experimentalBorder'] = false;
 
-		// Remove spacing support.
-		$args['supports']['spacing']['padding'] = false;
+        // Remove spacing support
+        $args['supports']['spacing'] = [
+            'padding' => false,
+        ];
 
-		// Remove typography support.
-		$args['supports']['typography']['lineHeight'] = false;
-		$args['supports']['typography']['__experimentalFontFamily'] = false;
-		$args['supports']['typography']['__experimentalFontWeight'] = false;
-		$args['supports']['typography']['__experimentalFontStyle'] = false;
-		$args['supports']['typography']['__experimentalTextTransform'] = false;
-		$args['supports']['typography']['__experimentalTextDecoration'] = false;
-        $args['supports']['typography']['__experimentalLetterSpacing'] = false;
-        $args['supports']['typography']['__experimentalDefaultControls']['fontSize'] = false;
-	}
+        // Remove typography support
+        $args['supports']['typography'] = [
+            'lineHeight' => false,
+            '__experimentalFontFamily' => false,
+            '__experimentalFontWeight' => false,
+            '__experimentalFontStyle' => false,
+            '__experimentalTextTransform' => false,
+            '__experimentalTextDecoration' => false,
+            '__experimentalLetterSpacing' => false,
+            '__experimentalDefaultControls' => [
+                'fontSize' => false,
+            ],
+        ];
+    }
 
-	return $args;
+    return $args;
 }
 add_filter( 'register_block_type_args', 'bcb_modify_core_code_block', 10, 2 );
 
