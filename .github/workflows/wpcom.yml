@@ -27,7 +27,7 @@ jobs:
       - name: Upload the artifact
         uses: actions/upload-artifact@v4
         with:
-          name: better-code-blocks
+          name: wpcom
           path: |
             .
             !.git*
