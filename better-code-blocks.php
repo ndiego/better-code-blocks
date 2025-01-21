@@ -23,6 +23,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Enqueues the block editor assets.
  *
+ * @since 0.1.0
+ *
  * @return void
  */
 function bcb_enqueue_editor_assets() {
@@ -39,6 +41,8 @@ add_action( 'enqueue_block_editor_assets', 'bcb_enqueue_editor_assets' );
 
 /**
  * Registers the frontend assets.
+ *
+ * @since 0.1.0
  *
  * @return void
  */
@@ -57,7 +61,7 @@ function bcb_register_frontend_assets() {
 	wp_register_style(
 		'bcb-frontend-styles',
 		plugins_url( 'build/index.css', __FILE__ ),
-		[],
+		array(),
 		filemtime( plugin_dir_path( __FILE__ ) . 'build/index.css' )
 	);
 }
@@ -65,6 +69,8 @@ add_action( 'wp_enqueue_scripts', 'bcb_register_frontend_assets', 100 );
 
 /**
  * Modifies the core code block output and enqueues assets when needed.
+ *
+ * @since 0.1.0
  *
  * @param string $block_content The block content.
  * @param array  $block         The block data.
@@ -79,10 +85,10 @@ function bcb_render_block( $block_content, $block ) {
 	wp_enqueue_script( 'bcb-frontend-scripts' );
 	wp_enqueue_style( 'bcb-frontend-styles' );
 
-	$language         = $block['attrs']['language'] ?? 'nohighlight';
-	$title            = $block['attrs']['title'] ?? '';
-	$has_copy         = $block['attrs']['hasCopy'] ?? true;
-	$has_line_numbers = $block['attrs']['hasLineNumbers'] ?? true;
+	$language         = isset( $block['attrs']['language'] ) ? $block['attrs']['language'] : 'nohighlight';
+	$title            = isset( $block['attrs']['title'] ) ? $block['attrs']['title'] : '';
+	$has_copy         = isset( $block['attrs']['hasCopy'] ) ? $block['attrs']['hasCopy'] : true;
+	$has_line_numbers = isset( $block['attrs']['hasLineNumbers'] ) ? $block['attrs']['hasLineNumbers'] : true;
 	
 	// Create new tag processor instance
 	$tags = new WP_HTML_Tag_Processor( $block_content );
@@ -97,7 +103,7 @@ function bcb_render_block( $block_content, $block ) {
 		if ( $existing_classes ) {
 			$classes = explode( ' ', $existing_classes );
 			foreach ( $classes as $key => $class ) {
-				if ( strpos( $class, '-font-size' ) !== false ) {
+				if ( false !== strpos( $class, '-font-size' ) ) {
 					$font_size_class = $class;
 					// Remove the font size class from existing classes
 					unset( $classes[ $key ] );
@@ -111,7 +117,7 @@ function bcb_render_block( $block_content, $block ) {
 		if ( $existing_styles ) {
 			if ( preg_match( '/font-size:\s*([^;]+);?/', $existing_styles, $matches ) ) {
 				$font_size_style = 'font-size: ' . $matches[1] . ';';
-				// Remove the font-size style from existing styles
+				// Remove the font-size style from existing styles.
 				$existing_styles = preg_replace( '/font-size:\s*[^;]+;?/', '', $existing_styles );
 			}
 		}
@@ -135,7 +141,7 @@ function bcb_render_block( $block_content, $block ) {
 		$copy_button = '';
 		if ( $has_copy ) {
 			$copy_button = sprintf(
-				'<button type="button" class="wp-code-block-copy-button" aria-label="%s">
+				'<button type="button" class="wp-code-block-copy-button" aria-label="%1$s">
 					<span class="wp-code-block-copy-icon">
 						<svg stroke-linejoin="round" style="color:currentColor" viewBox="0 0 16 16" aria-hidden="true">
 							<path fill-rule="evenodd" clip-rule="evenodd" d="M2.75 0.5C1.7835 0.5 1 1.2835 1 2.25V9.75C1 10.7165 1.7835 11.5 2.75 11.5H3.75H4.5V10H3.75H2.75C2.61193 10 2.5 9.88807 2.5 9.75V2.25C2.5 2.11193 2.61193 2 2.75 2H8.25C8.38807 2 8.5 2.11193 8.5 2.25V3H10V2.25C10 1.2835 9.2165 0.5 8.25 0.5H2.75ZM7.75 4.5C6.7835 4.5 6 5.2835 6 6.25V13.75C6 14.7165 6.7835 15.5 7.75 15.5H13.25C14.2165 15.5 15 14.7165 15 13.75V6.25C15 5.2835 14.2165 4.5 13.25 4.5H7.75ZM7.5 6.25C7.5 6.11193 7.61193 6 7.75 6H13.25C13.3881 6 13.5 6.11193 13.5 6.25V13.75C13.5 13.8881 13.3881 14 13.25 14H7.75C7.61193 14 7.5 13.8881 7.5 13.75V6.25Z" fill="currentColor"></path>
@@ -146,7 +152,7 @@ function bcb_render_block( $block_content, $block ) {
 							<path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z" fill="currentColor"/>
 						</svg>
 					</span>
-					<span class="screen-reader-text">%s</span>
+					<span class="screen-reader-text">%2$s</span>
 				</button>',
 				esc_attr__( 'Copy code to clipboard', 'better-code-blocks' ),
 				esc_html__( 'Copy', 'better-code-blocks' )
@@ -158,8 +164,8 @@ function bcb_render_block( $block_content, $block ) {
 			// If there's a title, put the copy button in the header.
 			$header = sprintf(
 				'<div class="wp-code-block-header">
-					<div class="wp-code-block-title">%s</div>
-					%s
+					<div class="wp-code-block-title">%1$s</div>
+					%2$s
 				</div>',
 				esc_html( $title ),
 				$copy_button
@@ -175,10 +181,10 @@ function bcb_render_block( $block_content, $block ) {
 
 		$body = sprintf(
 			'<div class="wp-code-block-body">
-				%s
-				<pre class="%s"%s>
-					%s
-					<code class="language-%s">%s</code>
+				%1$s
+				<pre class="%2$s"%3$s>
+					%4$s
+					<code class="language-%5$s">%6$s</code>
 				</pre>
 			</div>',
 			$copy_float,
@@ -191,7 +197,7 @@ function bcb_render_block( $block_content, $block ) {
 
 		// Combine all parts.
 		$block_content = sprintf(
-			'<div class="%s" style="%s">%s%s</div>',
+			'<div class="%1$s" style="%2$s">%3$s%4$s</div>',
 			esc_attr( $existing_classes ),
 			esc_attr( $existing_styles ),
 			$header,
@@ -214,13 +220,15 @@ add_filter( 'render_block', 'bcb_render_block', 10, 2 );
 /**
  * Remove supports from code blocks.
  *
+ * @since 0.1.0
+ *
  * @param array  $args       The block arguments for the registered block type.
  * @param string $block_type The block type name, including namespace.
  * @return array             The modified block arguments.
  */
 function bcb_modify_core_code_block( $args, $block_type ) {
 	if ( 'core/code' === $block_type ) {
-		$args['supports'] ??= [];
+		$args['supports'] = isset( $args['supports'] ) ? $args['supports'] : array();
 
 		// Remove color support.
 		$args['supports']['color'] = false;
@@ -253,6 +261,8 @@ add_filter( 'register_block_type_args', 'bcb_modify_core_code_block', 10, 2 );
  * This function modifies the block editor settings to disable inspector tabs
  * for the 'core/code' block.
  *
+ * @since 0.1.0
+ *
  * @param array $settings The current block editor settings.
  * @return array          The modified block editor settings.
  */
@@ -262,7 +272,7 @@ function bcb_disable_inspector_tabs( $settings ) {
 	}
 
 	$settings['blockInspectorTabs'] = array_merge(
-		$settings[ 'blockInspectorTabs' ],
+		$settings['blockInspectorTabs'],
 		array( 
 			'default'   => true,
 			'core/code' => false,
