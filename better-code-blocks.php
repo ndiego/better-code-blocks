@@ -212,43 +212,6 @@ function bcb_render_block( $block_content, $block ) {
 add_filter( 'render_block', 'bcb_render_block', 10, 2 );
 
 /**
- * Remove supports from code blocks.
- *
- * @param array  $args       The block arguments for the registered block type.
- * @param string $block_type The block type name, including namespace.
- * @return array             The modified block arguments.
- */
-function bcb_modify_core_code_block( $args, $block_type ) {
-	if ( 'core/code' === $block_type ) {
-		$args['supports'] ??= [];
-
-		// Remove color support.
-		$args['supports']['color'] = false;
-		$args['supports']['color']['text'] = false;
-		$args['supports']['color']['background'] = false;
-
-		// Remove border support.
-		$args['supports']['__experimentalBorder'] = false;
-
-		// Remove spacing support.
-		$args['supports']['spacing']['padding'] = false;
-
-		// Remove typography support.
-		$args['supports']['typography']['lineHeight'] = false;
-		$args['supports']['typography']['__experimentalFontFamily'] = false;
-		$args['supports']['typography']['__experimentalFontWeight'] = false;
-		$args['supports']['typography']['__experimentalFontStyle'] = false;
-		$args['supports']['typography']['__experimentalTextTransform'] = false;
-		$args['supports']['typography']['__experimentalTextDecoration'] = false;
-        $args['supports']['typography']['__experimentalLetterSpacing'] = false;
-        $args['supports']['typography']['__experimentalDefaultControls']['fontSize'] = false;
-	}
-
-	return $args;
-}
-add_filter( 'register_block_type_args', 'bcb_modify_core_code_block', 10, 2 );
-
-/**
  * This function modifies the block editor settings to disable inspector tabs
  * for the 'core/code' block.
  *
