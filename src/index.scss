@@ -157,7 +157,7 @@ body {
   .wp-code-block-copy-button {
     background: none;
     border: none;
-    border-radius: var(--wp--preset--spacing--10, 6px);
+    border-radius: var(--wp--custom--border--radius--default, 6px);
     color: var(--wp--preset--color--theme-5, inherit);
     cursor: pointer;
     height: 32px;
