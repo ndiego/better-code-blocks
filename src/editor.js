@@ -77,21 +77,27 @@ const addInspectorControls = createHigherOrderComponent( ( BlockEdit ) => {
                             value={ language }
                             options={ languages }
                             onChange={ ( language ) => setAttributes( { language } ) }
+                            __nextHasNoMarginBottom
+                            __next40pxDefaultSize
                         />
                         <TextControl
                             label={ __( 'Title', 'better-code-blocks' ) }
                             value={ title }
                             onChange={ ( title ) => setAttributes( { title } ) }
+                            __nextHasNoMarginBottom
+                            __next40pxDefaultSize
                         />
                         <ToggleControl
                             label={ __( 'Show copy button', 'better-code-blocks' ) }
                             checked={ hasCopy }
                             onChange={ ( hasCopy ) => setAttributes( { hasCopy } ) }
+                            __nextHasNoMarginBottom
                         />
                         <ToggleControl
                             label={ __( 'Show line numbers', 'better-code-blocks' ) }
                             checked={ hasLineNumbers }
                             onChange={ ( hasLineNumbers ) => setAttributes( { hasLineNumbers } ) }
+                            __nextHasNoMarginBottom
                         />
                     </PanelBody>
                 </InspectorControls>
