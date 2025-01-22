@@ -1,22 +1,22 @@
 /* Define CSS variables for syntax highlighting */
 body {
   --bcb--syntax-1: var(--wp--preset--color--theme-6, #171717); /* Comments, strings */
-  --bcb--syntax-2: #c0660d; /* Built-ins, class names */
-  --bcb--syntax-3: #1971a8; /* Keywords, literals */
-  --bcb--syntax-4: #008c6a; /* Strings, attributes */
-  --bcb--syntax-5: #e62c7a; /* Variables, numbers */
-  --bcb--syntax-6: #e21c2d; /* Symbols, links */
+  --bcb--syntax-2: #aa4d00; /* Built-ins, class names */
+  --bcb--syntax-3: #c41562; /* Keywords, literals */
+  --bcb--syntax-4: #107d32; /* Strings, attributes */
+  --bcb--syntax-5: #3858e9; /* Variables, numbers */
+  --bcb--syntax-6: #7d00cc; /* Symbols, links */
   --bcb--border: var(--wp--preset--color--theme-4, #d4d4d4); /* Border color */
   --bcb--background: var(--wp--preset--color--theme-1, #ffffff); /* Background color */
 }
 
 .dark-theme body {
   --bcb--syntax-1: var(--wp--preset--color--theme-6, #e5e5e5); /* Comments, strings */
-  --bcb--syntax-2: #e9950c; /* Built-ins, class names */
-  --bcb--syntax-3: #2e95d3; /* Keywords, literals */
-  --bcb--syntax-4: #00a67d; /* Strings, attributes */
-  --bcb--syntax-5: #df3079; /* Variables, numbers */
-  --bcb--syntax-6: #f22c3d; /* Symbols, links */
+  --bcb--syntax-2: #ff9300; /* Built-ins, class names */
+  --bcb--syntax-3: #ff4d8d; /* Keywords, literals */
+  --bcb--syntax-4: #3ad568; /* Strings, attributes */
+  --bcb--syntax-5: #6a82ee; /* Variables, numbers */
+  --bcb--syntax-6: #c472fb; /* Symbols, links */
   --bcb--border: var(--wp--preset--color--theme-4, #30363d); /* Border color */
   --bcb--background: var(--wp--preset--color--theme-1, #0d1117); /* Background color */
 }
@@ -40,7 +40,7 @@ body {
     font-size: var(--wp--preset--font-size--small, 13px);
     gap: 4px;
     justify-content: space-between;
-    min-height: 48px;
+    min-height: 44px;
     overflow: auto;
     padding: 0 8px 0 16px;
   }
@@ -160,11 +160,11 @@ body {
     border-radius: var(--wp--custom--border--radius--default, 6px);
     color: var(--wp--preset--color--theme-5, inherit);
     cursor: pointer;
-    height: 32px;
-    padding: 8px;
+    height: 28px;
+    padding: 6px;
     position: relative;
     transition: all 0.2s ease;
-    width: 32px;
+    width: 28px;
     
     &:hover {
       background: var(--wp--preset--color--theme-3, #ebebeb);
