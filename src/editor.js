@@ -37,14 +37,14 @@ const Edit = ( props ) => {
 		insertBlocksAfter,
 		mergeBlocks,
 	} = props;
-	const { language, title, hasCopy, hasLineNumbers } = attributes;
+	const { language, title, hasCopy, hasLineNumbers, hasMaxHeight, maxHeight } = attributes;
 	const blockProps = useBlockProps();
 
 	return (
 		<>
 			<InspectorControls>
 				<PanelBody
-					title={ __( 'Code Settings', 'better-code-blocks' ) }
+					title={ __( 'Settings', 'better-code-blocks' ) }
 					initialOpen={ true }
 				>
 					<SelectControl
@@ -85,6 +85,23 @@ const Edit = ( props ) => {
 						}
 						__nextHasNoMarginBottom
 					/>
+					<ToggleControl
+						label={ __( 'Limit height', 'better-code-blocks' ) }
+						checked={ hasMaxHeight }
+						onChange={ ( value ) => setAttributes( { hasMaxHeight: value } ) }
+						__nextHasNoMarginBottom
+					/>
+					{ hasMaxHeight && (
+						<TextControl
+							type="number"
+							label={ __( 'Maximum height (px)', 'better-code-blocks' ) }
+							value={ maxHeight }
+							onChange={ ( value ) => setAttributes( { maxHeight: parseInt( value, 10 ) } ) }
+							min={ 100 }
+							__nextHasNoMarginBottom
+							__next40pxDefaultSize
+						/>
+					) }
 				</PanelBody>
 			</InspectorControls>
 			<pre { ...blockProps }>
@@ -137,6 +154,14 @@ addFilter( 'blocks.registerBlockType', 'bcb/code-attributes', ( settings ) => {
 			hasLineNumbers: {
 				type: 'boolean',
 				default: true,
+			},
+			hasMaxHeight: {
+				type: 'boolean',
+				default: false,
+			},
+			maxHeight: {
+				type: 'number',
+				default: 400,
 			},
 		},
 		edit: Edit,

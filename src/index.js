@@ -138,3 +138,26 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	initializeHighlighting(); // Then do general highlighting for any missed blocks
 	initializeCopyButtons();
 } );
+
+document.addEventListener( 'click', ( event ) => {
+	const button = event.target.closest( '.wp-code-block-expand-button' );
+	if ( ! button ) {
+		return;
+	}
+
+	const block = button.closest( '.wp-block-code' );
+	if ( ! block ) {
+		return;
+	}
+
+	block.classList.toggle( 'has-max-height-100' );
+	
+	// Update aria-label based on state
+	const isExpanded = block.classList.contains( 'has-max-height-100' );
+	const newLabel = isExpanded ? 'Collapse code block' : 'Expand code block';
+	button.setAttribute( 
+		'aria-label', 
+		newLabel
+	);
+	button.setAttribute('title', newLabel);
+} );

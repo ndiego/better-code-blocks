@@ -89,6 +89,8 @@ function bcb_render_block( $block_content, $block ) {
 	$title            = isset( $block['attrs']['title'] ) ? $block['attrs']['title'] : '';
 	$has_copy         = isset( $block['attrs']['hasCopy'] ) ? $block['attrs']['hasCopy'] : true;
 	$has_line_numbers = isset( $block['attrs']['hasLineNumbers'] ) ? $block['attrs']['hasLineNumbers'] : true;
+	$has_max_height   = isset( $block['attrs']['hasMaxHeight'] ) ? $block['attrs']['hasMaxHeight'] : false;
+	$max_height       = isset( $block['attrs']['maxHeight'] ) ? $block['attrs']['maxHeight'] : 400;
 	
 	// Create new tag processor instance
 	$tags = new WP_HTML_Tag_Processor( $block_content );
@@ -141,7 +143,7 @@ function bcb_render_block( $block_content, $block ) {
 		$copy_button = '';
 		if ( $has_copy ) {
 			$copy_button = sprintf(
-				'<button type="button" class="wp-code-block-copy-button" aria-label="%1$s">
+				'<button type="button" class="wp-code-block-copy-button" aria-label="%1$s" title="%2$s">
 					<span class="wp-code-block-copy-icon">
 						<svg stroke-linejoin="round" style="color:currentColor" viewBox="0 0 16 16" aria-hidden="true">
 							<path fill-rule="evenodd" clip-rule="evenodd" d="M2.75 0.5C1.7835 0.5 1 1.2835 1 2.25V9.75C1 10.7165 1.7835 11.5 2.75 11.5H3.75H4.5V10H3.75H2.75C2.61193 10 2.5 9.88807 2.5 9.75V2.25C2.5 2.11193 2.61193 2 2.75 2H8.25C8.38807 2 8.5 2.11193 8.5 2.25V3H10V2.25C10 1.2835 9.2165 0.5 8.25 0.5H2.75ZM7.75 4.5C6.7835 4.5 6 5.2835 6 6.25V13.75C6 14.7165 6.7835 15.5 7.75 15.5H13.25C14.2165 15.5 15 14.7165 15 13.75V6.25C15 5.2835 14.2165 4.5 13.25 4.5H7.75ZM7.5 6.25C7.5 6.11193 7.61193 6 7.75 6H13.25C13.3881 6 13.5 6.11193 13.5 6.25V13.75C13.5 13.8881 13.3881 14 13.25 14H7.75C7.61193 14 7.5 13.8881 7.5 13.75V6.25Z" fill="currentColor"></path>
@@ -156,6 +158,24 @@ function bcb_render_block( $block_content, $block ) {
 				</button>',
 				esc_attr__( 'Copy code to clipboard', 'better-code-blocks' ),
 				esc_html__( 'Copy', 'better-code-blocks' )
+			);
+		}
+
+		// Create expand button markup if max height is set
+		$expand_button = '';
+		if ( $has_max_height ) {
+			$expand_button = sprintf(
+				'<button type="button" class="wp-code-block-expand-button" aria-label="%1$s" title="%2$s">
+					<span class="wp-code-block-expand-icon">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+					</span>
+					<span class="wp-code-block-collapse-icon">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+					</span>
+					<span class="screen-reader-text">%2$s</span>
+				</button>',
+				esc_attr__( 'Toggle code block height', 'better-code-blocks' ),
+				esc_html__( 'Expand', 'better-code-blocks' )
 			);
 		}
 
@@ -179,9 +199,13 @@ function bcb_render_block( $block_content, $block ) {
 			? sprintf( '<div class="wp-code-block-copy-float">%s</div>', $copy_button )
 			: '';
 
+		// Add expand button after body if max height is set
+		$expand_float = $has_max_height 
+			? sprintf( '<div class="wp-code-block-expand-float">%s</div>', $expand_button )
+			: '';
+
 		$body = sprintf(
-			'<div class="wp-code-block-body">
-				%1$s
+			'<div class="wp-code-block-body" %7$s>
 				<pre class="%2$s"%3$s>
 					%4$s
 					<code class="language-%5$s">%6$s</code>
@@ -192,16 +216,19 @@ function bcb_render_block( $block_content, $block ) {
 			$font_size_style ? ' style="' . esc_attr( $font_size_style ) . '"' : '',
 			$has_line_numbers ? '<div class="wp-code-block-lines"></div>' : '',
 			esc_attr( $language ),
-			$updated_content
+			$updated_content,
+			$has_max_height ? sprintf( 'style="max-height: %dpx; overflow-y: auto;"', intval( $max_height ) ) : ''
 		);
 
 		// Combine all parts.
 		$block_content = sprintf(
-			'<div class="%1$s" style="%2$s">%3$s%4$s</div>',
+			'<div class="%1$s" style="%2$s">%3$s%4$s%5$s%6$s</div>',
 			esc_attr( $existing_classes ),
 			esc_attr( $existing_styles ),
 			$header,
-			$body
+			$copy_float,
+			$body,
+			$expand_float
 		);
 	}
 
